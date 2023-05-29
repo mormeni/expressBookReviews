@@ -33,9 +33,9 @@ public_users.get('/isbn/:isbn', function (req, res) {
     if (filteredISBN.length > 0) {
       return res.status(201).json(filteredISBN);
     } else {
-      return res
-        .status(201)
-        .json({ message: `Book with ISBN: ${bookISBN} not found!` });
+      return res.status(201).json({
+        message: `Book with ISBN: ${bookISBN.toUpperCase()} not found!`,
+      });
     }
   } else {
     return res.status(403).json({ message: 'Invalid Request!' });
@@ -53,9 +53,9 @@ public_users.get('/author/:author', function (req, res) {
     if (filteredAuthor.length > 0) {
       return res.status(201).json(filteredAuthor);
     } else {
-      return res
-        .status(201)
-        .json({ message: `There is no author with the name ${author} found!` });
+      return res.status(201).json({
+        message: `There is no author with the name ${author.toUpperCase()} found!`,
+      });
     }
   } else {
     return res.status(400).json({ message: 'There has been an error!' });
@@ -65,13 +65,41 @@ public_users.get('/author/:author', function (req, res) {
 // Get all books based on title
 public_users.get('/title/:title', function (req, res) {
   //Write your code here
-  return res.status(300).json({ message: 'Yet to be implemented' });
+  const bookTitle = req.params.title;
+  if (bookTitle) {
+    const filteredTitle = Object.values(books).filter(
+      (book) => book.title.toLowerCase() === bookTitle.toLowerCase()
+    );
+    if (filteredTitle.length > 0) {
+      return res.status(201).json(filteredTitle);
+    } else {
+      return res.status(201).json({
+        message: `There is no author with the name ${bookTitle.toUpperCase()} found!`,
+      });
+    }
+  } else {
+    return res.status(400).json({ message: 'There has been an error!' });
+  }
 });
 
 //  Get book review
 public_users.get('/review/:isbn', function (req, res) {
   //Write your code here
-  return res.status(300).json({ message: 'Yet to be implemented' });
+  const bookISBN = req.params.isbn;
+  if (bookISBN) {
+    const filteredBook = Object.entries(books).filter(
+      ([key]) => book.author.toLowerCase() == bookISBN.toLowerCase()
+    );
+    if (filteredAuthor.length > 0) {
+      return res.status(201).json(filteredAuthor);
+    } else {
+      return res
+        .status(201)
+        .json({ message: `There is no author with the name ${author} found!` });
+    }
+  } else {
+    return res.status(400).json({ message: 'There has been an error!' });
+  }
 });
 
 module.exports.general = public_users;
