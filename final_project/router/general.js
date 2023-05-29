@@ -12,9 +12,9 @@ public_users.post('/register', (req, res) => {
 // Get the book list available in the shop
 public_users.get('/', function (req, res) {
   //Write your code here
-  const bookList = JSON.stringify(books);
+  const bookList = JSON.stringify(books, null, 4);
   if (bookList.length > 0) {
-    return res.status(201).json(bookList);
+    return res.status(201).send(bookList);
   } else {
     return res.status(403).json({ message: 'No book found!' });
   }
@@ -26,7 +26,9 @@ public_users.get('/isbn/:isbn', function (req, res) {
   const bookISBN = req.params.isbn;
 
   if (bookISBN) {
-    const filteredISBN = Object.keys(books).filter(([key]) => key == bookISBN);
+    const filteredISBN = Object.entries(books).filter(
+      ([key]) => key == bookISBN
+    );
 
     if (filteredISBN.length > 0) {
       return res.status(201).json(filteredISBN);
