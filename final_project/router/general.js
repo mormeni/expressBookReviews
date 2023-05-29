@@ -88,14 +88,23 @@ public_users.get('/review/:isbn', function (req, res) {
   const bookISBN = req.params.isbn;
   if (bookISBN) {
     const filteredBook = Object.entries(books).filter(
-      ([key]) => book.author.toLowerCase() == bookISBN.toLowerCase()
+      ([key]) => key == bookISBN
     );
-    if (filteredAuthor.length > 0) {
-      return res.status(201).json(filteredAuthor);
+
+    if (filteredBook.length > 0) {
+      //Checking for the book reviews
+      const bookReview = filteredBook.reviews;
+      if (bookReview) {
+        return res.status(201).json(bookReview);
+      } else {
+        return res
+          .status(201)
+          .json({ message: 'This book has no review yet!' });
+      }
     } else {
-      return res
-        .status(201)
-        .json({ message: `There is no author with the name ${author} found!` });
+      return res.status(201).json({
+        message: `The book with this ISBN: ${bookISBN} is not found!`,
+      });
     }
   } else {
     return res.status(400).json({ message: 'There has been an error!' });
