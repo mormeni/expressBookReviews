@@ -5,8 +5,24 @@ let users = require('./auth_users.js').users;
 const public_users = express.Router();
 
 public_users.post('/register', (req, res) => {
-  //Write your code here
-  return res.status(300).json({ message: 'Yet to be implemented' });
+  const { username, password } = req.body;
+  /* 
+  if (username <= 0 || password.length <= 0) {
+    return res.status(404).json({ message: 'Input field cannot be empty!' });
+  }
+ */
+  if (username && password) {
+    if (!isValid(username)) {
+      let newUser = { username: username, password: password };
+      users.push(newUser);
+      return res
+        .status(201)
+        .json({ message: 'User account created successfully!' });
+    } else {
+      return res.status(400).json({ message: 'This user already exist!' });
+    }
+  }
+  return res.status(400).json({ message: 'Input fields cannot be empty!' });
 });
 
 // Get the book list available in the shop
