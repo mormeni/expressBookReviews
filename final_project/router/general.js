@@ -6,11 +6,7 @@ const public_users = express.Router();
 
 public_users.post('/register', (req, res) => {
   const { username, password } = req.body;
-  /* 
-  if (username <= 0 || password.length <= 0) {
-    return res.status(404).json({ message: 'Input field cannot be empty!' });
-  }
- */
+
   if (username && password) {
     if (!isValid(username)) {
       let newUser = { username: username, password: password };

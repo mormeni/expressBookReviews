@@ -23,7 +23,7 @@ app.use('/customer/auth/*', function auth(req, res, next) {
     const userToken = req.session.authorization['accessToken'];
 
     //Verifying a user's access right
-    jwt.verify(userToken, 'access', (err, user) => {
+    jwt.verify(userToken, 'accessSecret', (err, user) => {
       if (!err) {
         req.user = user;
 
