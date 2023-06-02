@@ -35,24 +35,30 @@ const authenticatedUser = (username, password) => {
 //only registered users can login
 regd_users.post('/login', (req, res) => {
   const { username, password } = req.body;
-  return res.status(400).json({ message: 'Error logging in' });
-  /* if (!username || !password) {
-    return res.status(400).json({ message: 'Error logging in' });
+
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Input fields cannot be empty!' });
   }
 
-  if (username & password) {
+  if (username && password) {
     if (authenticatedUser(username, password)) {
+      //return res.status(201).json({ message: 'User is authenticated' });
       let accessToken = jwt.sign({ data: password }, 'accessSecret', {
         expiresIn: 60 * 60,
       });
 
-      req.session.authorization = { accessToken, username };
-      return res.status(200).send('User logged in successfully!');
-    } else {
-      return res.status(208).json({ message: 'Invalid Username or password' });
+      if (accessToken) {
+        req.session.authorization = { accessToken, username };
+        return res
+          .status(200)
+          .json({
+            message: 'User logged in successfully!',
+            reqAuthor: req.session.authorization,
+          });
+      }
     }
-  } */
-  //return res.status(300).json({ message: 'Yet to be implemented' });
+  }
+  return res.status(208).json({ message: 'Invalid Username or password' });
 });
 
 // Add a book review
