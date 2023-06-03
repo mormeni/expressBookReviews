@@ -42,19 +42,15 @@ regd_users.post('/login', (req, res) => {
 
   if (username && password) {
     if (authenticatedUser(username, password)) {
-      //return res.status(201).json({ message: 'User is authenticated' });
       let accessToken = jwt.sign({ data: password }, 'accessSecret', {
         expiresIn: 60 * 60,
       });
 
       if (accessToken) {
         req.session.authorization = { accessToken, username };
-        return res
-          .status(200)
-          .json({
-            message: 'User logged in successfully!',
-            reqAuthor: req.session.authorization,
-          });
+        return res.status(200).json({
+          message: 'User logged in successfully!',
+        });
       }
     }
   }
@@ -63,8 +59,46 @@ regd_users.post('/login', (req, res) => {
 
 // Add a book review
 regd_users.put('/auth/review/:isbn', (req, res) => {
-  //Write your code here
-  return res.status(300).json({ message: 'Yet to be implemented' });
+  const bookISBN = req.params.isbn;
+  const { reviewText } = req.body;
+  const username = req.session.authorization.username;
+  const filteredReviews = Object.entries(books).filter(
+    ([key]) => key === bookISBN
+  );
+  //Adding to the review object
+  const reviewObject = filteredReviews[0][1]['reviews'];
+  const usernameExist = Object.keys(reviewObject).filter(
+    (key) => key == username
+  );
+
+  //Checks if a book with such ISBN exists
+  if (filteredReviews.length <= 0) {
+    res.status(401).json({
+      message: `Book with the ISBN: ${bookISBN.toUpperCase()} not found!`,
+    });
+  }
+
+  //Checking if the review text is empty
+  if (!reviewText) {
+    res.status(400).json({ message: 'Review input field cannot be empty!' });
+  }
+
+  /* Determining if user already has a review for that 
+  particular book and isbn annd updating the review if any*/
+
+  if (usernameExist.length > 0) {
+    reviewObject[username].reviewMessage = reviewText;
+    return res.status(201).json({
+      message: `The review of the book with ISBN: ${bookISBN} has been updated!`,
+    });
+  }
+
+  //Creating a new review if the user has not yet reviewed the book
+
+  reviewObject[username] = { reviewMessage: reviewText };
+  return res.status(201).json({
+    message: `A new review for the book with ISBN: ${bookISBN} has been created!`,
+  });
 });
 
 module.exports.authenticated = regd_users;
