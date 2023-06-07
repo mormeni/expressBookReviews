@@ -96,7 +96,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
 });
 
 // Get book details based on author
-public_users.get('/author/:author', function (req, res) {
+/* public_users.get('/author/:author', function (req, res) {
   //Write your code here
   const author = req.params.author;
   if (author) {
@@ -112,6 +112,25 @@ public_users.get('/author/:author', function (req, res) {
     }
   } else {
     return res.status(400).json({ message: 'There has been an error!' });
+  }
+}); */
+
+//Task 12: Get book details based on author using Async-await
+public_users.get('/author/:author', async function (req, res) {
+  try {
+    const author = req.params.author;
+    const filteredAuthor = await Object.values(books).filter(
+      (book) => book.author.toLowerCase() == author.toLowerCase()
+    );
+    if (filteredAuthor.length > 0) {
+      return res.status(201).json(filteredAuthor);
+    } else {
+      return res.status(201).json({
+        message: `There is no author with the name ${author.toUpperCase()} found!`,
+      });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: `This error occurred ${error}` });
   }
 });
 
