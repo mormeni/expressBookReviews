@@ -126,7 +126,6 @@ regd_users.delete('/auth/review/:isbn', (req, res) => {
 
     return res.status(200).json({
       message: `The review for the book with ISBN: ${bookISBN} was deleted successfully`,
-      'Updated Review': reviewGroups,
     });
   }
   return res
