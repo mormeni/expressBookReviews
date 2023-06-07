@@ -22,13 +22,17 @@ public_users.post('/register', (req, res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/', function (req, res) {
+public_users.get('/', async function (req, res) {
   //Write your code here
-  const bookList = JSON.stringify(books, null, 4);
-  if (bookList.length > 0) {
-    return res.status(201).send(bookList);
-  } else {
-    return res.status(403).json({ message: 'No book found!' });
+  try {
+    const bookList = await JSON.stringify(books, null, 4);
+    if (bookList.length > 0) {
+      return res.status(201).send(bookList);
+    } else {
+      return res.status(403).json({ message: 'No book found!' });
+    }
+  } catch (error) {
+    return res.status(400).json({ 'Error Message': error });
   }
 });
 
