@@ -22,6 +22,17 @@ public_users.post('/register', (req, res) => {
 });
 
 // Get the book list available in the shop
+public_users.get('/', function (req, res) {
+  //Write your code here
+  const bookList = JSON.stringify(books, null, 4);
+  if (bookList.length > 0) {
+    return res.status(201).send(bookList);
+  } else {
+    return res.status(403).json({ message: 'No book found!' });
+  }
+});
+
+// task 10 Get the book list available in the shop Using Async-await
 public_users.get('/', async function (req, res) {
   //Write your code here
   try {
@@ -56,6 +67,32 @@ public_users.get('/isbn/:isbn', function (req, res) {
   } else {
     return res.status(403).json({ message: 'Invalid Request!' });
   }
+});
+
+// Task 11 Get book details based on ISBN using promise
+public_users.get('/isbn/:isbn', function (req, res) {
+  //Write your code here
+
+  const isbnPromise = new Promise((resolve, reject) => {
+    const bookISBN = req.params.isbn;
+    const filteredISBN = Object.entries(books).filter(
+      ([key]) => key == bookISBN
+    );
+
+    if (filteredISBN.length > 0) {
+      resolve(filteredISBN);
+    } else {
+      reject(new Error(`Operation Failed!`));
+    }
+  });
+
+  isbnPromise
+    .then((result) => {
+      return res.status(201).json(result);
+    })
+    .catch((error) => {
+      return res.send(error);
+    });
 });
 
 // Get book details based on author
