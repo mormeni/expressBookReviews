@@ -96,7 +96,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
 });
 
 // Get book details based on author
-/* public_users.get('/author/:author', function (req, res) {
+public_users.get('/author/:author', function (req, res) {
   //Write your code here
   const author = req.params.author;
   if (author) {
@@ -113,7 +113,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
   } else {
     return res.status(400).json({ message: 'There has been an error!' });
   }
-}); */
+});
 
 //Task 12: Get book details based on author using Async-await
 public_users.get('/author/:author', async function (req, res) {
@@ -152,6 +152,38 @@ public_users.get('/title/:title', function (req, res) {
   } else {
     return res.status(400).json({ message: 'There has been an error!' });
   }
+});
+
+//Task 13: Get all books based on title using promise
+public_users.get('/title/:title', function (req, res) {
+  const bookTitle = req.params.title;
+  const titlePromise = new Promise((resolve, reject) => {
+    const filteredTitle = Object.values(books).filter(
+      (book) => book.title.toLowerCase() === bookTitle.toLowerCase()
+    );
+
+    if (filteredTitle) {
+      resolve(filteredTitle);
+    } else {
+      reject(new Error('Operation Failed!'));
+    }
+  });
+
+  //Working with the returned promise
+
+  titlePromise
+    .then((result) => {
+      if (result.length > 0) {
+        return res.status(201).json(result);
+      } else {
+        return res.status(201).json({
+          message: `There is no author with the name ${bookTitle.toUpperCase()} found!`,
+        });
+      }
+    })
+    .catch((error) => {
+      return res.send(error);
+    });
 });
 
 //  Get book review
