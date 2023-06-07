@@ -22,7 +22,7 @@ public_users.post('/register', (req, res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/', function (req, res) {
+/* public_users.get('/', function (req, res) {
   //Write your code here
   const bookList = JSON.stringify(books, null, 4);
   if (bookList.length > 0) {
@@ -30,7 +30,7 @@ public_users.get('/', function (req, res) {
   } else {
     return res.status(403).json({ message: 'No book found!' });
   }
-});
+}); */
 
 // task 10 Get the book list available in the shop Using Async-await
 public_users.get('/', async function (req, res) {
@@ -48,7 +48,7 @@ public_users.get('/', async function (req, res) {
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn', function (req, res) {
+/* public_users.get('/isbn/:isbn', function (req, res) {
   //Write your code here
   const bookISBN = req.params.isbn;
 
@@ -67,7 +67,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
   } else {
     return res.status(403).json({ message: 'Invalid Request!' });
   }
-});
+}); */
 
 // Task 11 Get book details based on ISBN using promise
 public_users.get('/isbn/:isbn', function (req, res) {
@@ -96,7 +96,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
 });
 
 // Get book details based on author
-public_users.get('/author/:author', function (req, res) {
+/* public_users.get('/author/:author', function (req, res) {
   //Write your code here
   const author = req.params.author;
   if (author) {
@@ -113,7 +113,7 @@ public_users.get('/author/:author', function (req, res) {
   } else {
     return res.status(400).json({ message: 'There has been an error!' });
   }
-});
+}); */
 
 //Task 12: Get book details based on author using Async-await
 public_users.get('/author/:author', async function (req, res) {
@@ -135,7 +135,7 @@ public_users.get('/author/:author', async function (req, res) {
 });
 
 // Get all books based on title
-public_users.get('/title/:title', function (req, res) {
+/* public_users.get('/title/:title', function (req, res) {
   //Write your code here
   const bookTitle = req.params.title;
   if (bookTitle) {
@@ -152,7 +152,7 @@ public_users.get('/title/:title', function (req, res) {
   } else {
     return res.status(400).json({ message: 'There has been an error!' });
   }
-});
+}); */
 
 //Task 13: Get all books based on title using promise
 public_users.get('/title/:title', function (req, res) {
